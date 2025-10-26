@@ -49,20 +49,22 @@
 </head>
 <body>
 
-<!-- Start Screen -->
+<audio id="bgm" loop>
+  <source src="about_time.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="chime">
+  <source src="chime.mp3" type="audio/mpeg">
+</audio>
+
+
 <div id="startScreen">
   <h1>💖 Secret Quiz for You 💖</h1>
   <p>Click below to start the quiz and unlock the surprise!</p>
   <button onclick="startQuiz()">Start Quiz</button>
 </div>
 
-<!-- Quiz Content -->
 <div id="quizContent" class="hidden">
-
-  <!-- Chime audio -->
-  <audio id="chime">
-    <source src="chime.mp3" type="audio/mpeg">
-  </audio>
 
   <div class="question" id="q1">
     <p>1. Where did we first meet? 🌐</p>
@@ -114,13 +116,19 @@ function startQuiz() {
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('quizContent').classList.remove('hidden');
 
-  // Unlock chime audio for browser
-  const chime = document.getElementById('chime');
-  chime.play().then(() => chime.pause());
+  // Start Background Music (BGM) when the quiz starts
+  const bgm = document.getElementById('bgm');
+  bgm.currentTime = 0; 
+  bgm.play().catch(error => {
+    // This handles cases where the browser prevents automatic music start.
+    console.log("Autoplay was prevented. Music may not play until the user interacts more.");
+  });
 }
 
 function checkAnswer(qNum, correctAnswer) {
   const input = document.getElementById('a' + qNum).value.trim().toLowerCase();
+  
+  // Note: Question 4 accepts any input since the correct answer was left blank.
   if (qNum === 4 || input === correctAnswer.toLowerCase()) {
     document.getElementById('w' + qNum).classList.remove('hidden');
 
@@ -130,8 +138,10 @@ function checkAnswer(qNum, correctAnswer) {
     chime.play();
 
     if (qNum < 5) {
+      // Move to the next question
       document.getElementById('q' + (qNum + 1)).classList.remove('hidden');
     } else {
+      // All questions complete, show the final message
       document.getElementById('secret').classList.remove('hidden');
       document.getElementById('message').classList.remove('hidden');
     }
