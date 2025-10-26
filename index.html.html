@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Quiz for You</title>
+<style>
+  body { 
+    font-family: 'Arial', sans-serif; 
+    text-align: center; 
+    margin: 0; 
+    padding: 0; 
+    background: linear-gradient(to bottom right, #ffe6f2, #fff0f5); 
+    color: #6a1b9a;
+  }
+  h1 { margin-top: 40px; color: #d63384; }
+  p { font-size: 18px; }
+  .question { margin: 30px 0; }
+  input { padding: 10px; width: 220px; font-size: 16px; border-radius: 5px; border: 1px solid #d63384; }
+  button { padding: 10px 15px; margin-left: 10px; background-color: #d63384; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
+  button:hover { background-color: #b12d6a; }
+  .hidden { display: none; }
+  .word-unlocked { 
+    font-size: 22px; 
+    font-weight: bold; 
+    color: #d63384; 
+    margin-top: 15px; 
+    animation: fadeIn 1s ease-in-out;
+  }
+  #secret { 
+    font-size: 28px; 
+    font-weight: bold; 
+    color: #d63384; 
+    margin-top: 40px; 
+    animation: fadeIn 2s ease-in-out;
+  }
+  #message {
+    font-size: 20px;
+    color: #b12d6a;
+    margin-top: 20px;
+    animation: fadeIn 3s ease-in-out;
+    white-space: pre-line;
+  }
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+</head>
+<body>
+
+<!-- Start Screen -->
+<div id="startScreen">
+  <h1>💖 Secret Quiz for You 💖</h1>
+  <p>Click below to start the quiz and unlock the surprise!</p>
+  <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<!-- Quiz Content -->
+<div id="quizContent" class="hidden">
+
+  <!-- Chime audio -->
+  <audio id="chime">
+    <source src="chime.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="question" id="q1">
+    <p>1. Where did we first meet? 🌐</p>
+    <input type="text" id="a1">
+    <button onclick="checkAnswer(1, 'Facebook')">Submit</button>
+    <p class="hidden word-unlocked" id="w1">Word unlocked: The</p>
+  </div>
+
+  <div class="question hidden" id="q2">
+    <p>2. What movie was the most memorable to watch together? 🎬</p>
+    <input type="text" id="a2">
+    <button onclick="checkAnswer(2, 'About Time')">Submit</button>
+    <p class="hidden word-unlocked" id="w2">Word unlocked: life</p>
+  </div>
+
+  <div class="question hidden" id="q3">
+    <p>3. What is the number one thing that is attractive to me in you? 💖</p>
+    <input type="text" id="a3">
+    <button onclick="checkAnswer(3, 'obsession and dedication')">Submit</button>
+    <p class="hidden word-unlocked" id="w3">Word unlocked: of</p>
+  </div>
+
+  <div class="question hidden" id="q4">
+    <p>4. What’s your favorite thing about me? 🌸</p>
+    <input type="text" id="a4">
+    <button onclick="checkAnswer(4, '')">Submit</button>
+    <p class="hidden word-unlocked" id="w4">Word unlocked: my</p>
+  </div>
+
+  <div class="question hidden" id="q5">
+    <p>5. What word best describes our relationship? ❤️</p>
+    <input type="text" id="a5">
+    <button onclick="checkAnswer(5, 'Love')">Submit</button>
+    <p class="hidden word-unlocked" id="w5">Word unlocked: Love</p>
+  </div>
+
+  <p id="secret" class="hidden">The life of my Love</p>
+  <p id="message" class="hidden">
+I love you sooo soooo soooo much.
+I appreciate your hardwork and everything you are doing for the relationship💖
+It makes me feel so taken care of and loved🫠
+MYYY MAAANN🦁
+</p>
+
+</div>
+
+<script>
+function startQuiz() {
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizContent').classList.remove('hidden');
+
+  // Unlock chime audio for browser
+  const chime = document.getElementById('chime');
+  chime.play().then(() => chime.pause());
+}
+
+function checkAnswer(qNum, correctAnswer) {
+  const input = document.getElementById('a' + qNum).value.trim().toLowerCase();
+  if (qNum === 4 || input === correctAnswer.toLowerCase()) {
+    document.getElementById('w' + qNum).classList.remove('hidden');
+
+    // Play chime sound
+    const chime = document.getElementById('chime');
+    chime.currentTime = 0;
+    chime.play();
+
+    if (qNum < 5) {
+      document.getElementById('q' + (qNum + 1)).classList.remove('hidden');
+    } else {
+      document.getElementById('secret').classList.remove('hidden');
+      document.getElementById('message').classList.remove('hidden');
+    }
+  } else {
+    alert('Try again! 😊');
+  }
+}
+</script>
+
+</body>
+</html>
